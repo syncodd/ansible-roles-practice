@@ -1,0 +1,6 @@
+---
+- name: Listen Ports Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - listenports

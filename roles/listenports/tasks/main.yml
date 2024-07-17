@@ -1,0 +1,19 @@
+---
+- name: Make sure net-tools installed
+  become: true
+  ansible.builtin.apt:
+    name: net-tools
+    state: present
+
+- name: Gather facts on listening ports
+  community.general.listen_ports_facts:
+    command: 'netstat'
+    include_non_listening: true
+
+- name: List TCP ports
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.tcp_listen | map(attribute='port') | sort | list }}"
+
+- name: List UDP ports
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.udp_listen | map(attribute='port') | sort | list }}"

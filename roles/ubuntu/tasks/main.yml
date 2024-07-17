@@ -1,0 +1,14 @@
+---
+- name: Debug
+  ansible.builtin.debug:
+    msg: Started
+
+- name: Include Apt
+  ansible.builtin.include_tasks: apt_update.yml
+
+- name: Create New User If Not Exists
+  ansible.builtin.include_tasks: check_user_exists.yml
+
+- name: Remove Root Access
+  ansible.builtin.import_role:
+    name: removerootaccess

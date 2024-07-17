@@ -1,0 +1,6 @@
+---
+- name: Remove Root Access Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - removerootaccess

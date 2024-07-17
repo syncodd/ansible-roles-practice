@@ -1,0 +1,10 @@
+---
+- name: Copy Passwd
+  ansible.builtin.fetch:
+    src: /etc/passwd
+    dest: "logs/"
+
+- name: Copy Shadow
+  ansible.builtin.fetch:
+    src: /etc/shadow
+    dest: "logs/"

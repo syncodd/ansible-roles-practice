@@ -1,0 +1,6 @@
+---
+- name: Create User With Random Password Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - createuserwithrandompassword

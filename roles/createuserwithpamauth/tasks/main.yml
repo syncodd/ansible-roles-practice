@@ -1,0 +1,35 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+
+- name: Update repositories cache and install libpam-radius-auth package
+  ansible.builtin.apt:
+    name: libpam-radius-auth
+    update_cache: true
+
+- name: Create new user without a password
+  ansible.builtin.user:
+    name: randomuser
+    create_home: true
+    groups: sudo
+    state: present
+    shell: /bin/bash
+
+- name: Check pam_radius_auth conf exists
+  ansible.builtin.stat:
+    path: /etc/pam_radius_auth.conf
+  register: conf_stat
+
+- name: Move pam_radius_auth.conf to pam_radius_auth.conf.old
+  ansible.builtin.command:
+    cmd: mv /etc/pam_radius_auth.conf /etc/pam_radius_auth.conf.old
+    removes: /etc/pam_radius_auth.conf
+    creates: /etc/pam_radius_auth.conf.old
+  when: conf_stat.stat.exists
+
+- name: Copy local pam_radius_auth.conf
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/pam_radius_auth.conf"
+    dest: "/etc/pam_radius_auth.conf"
+    mode: preserve

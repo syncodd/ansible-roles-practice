@@ -1,0 +1,10 @@
+.vscode/
+
+venv/
+inventory/
+logs/
+passwords/
+
+*.log
+
+id_rsa*

@@ -1,0 +1,6 @@
+---
+- name: Create user Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - createuserwithssh

@@ -1,0 +1,18 @@
+---
+- name: Create random password
+  ansible.builtin.set_fact:
+    password: "{{ lookup('ansible.builtin.password', 'passwords/{{ createuserwithrandompassword_username }}@{{ inventory_hostname }}') }}"
+
+- name: Password
+  ansible.builtin.debug:
+    var: password
+
+- name: Create new user without a password
+  register: newuser
+  ansible.builtin.user:
+    name: "{{ createuserwithrandompassword_username }}"
+    password: "{{ password | password_hash }}"
+    create_home: true
+    groups: sudo
+    state: present
+    shell: /bin/bash

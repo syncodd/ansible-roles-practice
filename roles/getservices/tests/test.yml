@@ -1,0 +1,6 @@
+---
+- name: Get Services Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - getservices

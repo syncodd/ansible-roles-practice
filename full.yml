@@ -1,0 +1,10 @@
+---
+- name: Get Users
+  hosts: webservers
+  become: true
+  roles:
+    - changerootpassword
+    # - removerootaccess
+    - getusers
+    - getservices
+    - listenports

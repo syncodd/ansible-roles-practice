@@ -1,0 +1,13 @@
+---
+- name: Create random password
+  ansible.builtin.set_fact:
+    password: "{{ lookup('ansible.builtin.password', 'passwords/root@{{ inventory_hostname }}') }}"
+
+- name: Password
+  ansible.builtin.debug:
+    var: password
+
+- name: Change Root's Password
+  ansible.builtin.user:
+    name: "root"
+    password: "{{ password | password_hash }}"

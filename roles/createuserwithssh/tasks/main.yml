@@ -1,0 +1,43 @@
+---
+- name: Gather facts
+  ansible.builtin.setup:
+
+- name: Create new user without a password
+  register: newuser
+  ansible.builtin.user:
+    name: "{{ username }}"
+    create_home: true
+    groups: sudo
+    state: present
+    shell: /bin/bash
+
+- name: Create .ssh for the new user
+  ansible.builtin.file:
+    mode: "0700"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+    path: "{{ newuser.home }}/.ssh"
+    state: directory
+
+- name: Copy authorized_keys to new user's .ssh folder
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/id_rsa_ansible.pub"
+    dest: "{{ newuser.home }}/.ssh/authorized_keys"
+    mode: preserve
+
+- name: Change mode of authorized_keys file
+  ansible.builtin.file:
+    mode: "0644"
+    path: "{{ newuser.home }}/.ssh/authorized_keys"
+    owner: "{{ username }}"
+    group: "{{ username }}"
+
+- name: Sudo nopasswd for the new user
+  ansible.builtin.template:
+    src: sudoers.j2
+    dest: /etc/sudoers.d/{{ username }}
+    owner: root
+    group: root
+    mode: "0440"
+    validate: /usr/sbin/visudo -cf %s

@@ -1,0 +1,5 @@
+---
+- name: Ubuntu
+  hosts: webservers
+  roles:
+    - createuserwithssh

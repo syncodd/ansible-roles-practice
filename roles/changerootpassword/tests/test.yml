@@ -1,0 +1,6 @@
+---
+- name: Change Root Password Test
+  hosts: localhost
+  remote_user: root
+  roles:
+    - changerootpassword

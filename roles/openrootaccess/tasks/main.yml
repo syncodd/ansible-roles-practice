@@ -1,0 +1,11 @@
+---
+- name: Enable Root Login
+  ansible.builtin.lineinfile:
+    dest: /etc/ssh/sshd_config
+    regexp: '^PermitRootLogin'
+    line: "PermitRootLogin yes"
+    state: present
+    backup: true
+  become: true
+  notify:
+    - Restart ssh

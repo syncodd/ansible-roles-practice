@@ -1,0 +1,16 @@
+---
+- name: Collect facts about system services
+  ansible.builtin.service_facts:
+
+- name: Running services
+  ansible.builtin.debug:
+    msg: "{{ ansible_facts.services | dict2items | selectattr('value.state', '==', 'running') | map(attribute='key') }}"
+  register: services
+
+# - name: Print output to file
+#   ansible.builtin.copy:
+#     content: "{{ services.msg }}"
+#     dest: "logs/service/{{ ansible_date_time.iso8601_micro }}_{{ inventory_hostname }}_running_services.log"
+#     force: false
+#     mode: "0644"
+#   delegate_to: localhost

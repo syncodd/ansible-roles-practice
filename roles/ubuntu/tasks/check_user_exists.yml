@@ -1,0 +1,18 @@
+---
+- name: Register username var
+  ansible.builtin.set_fact:
+    username: "{{ ubuntu_new_user_name }}"
+
+- name: Create new user if not exists
+  block:
+    - name: Check if new user already exists
+      ansible.builtin.command: ssh -q -o BatchMode=yes -o ConnectTimeout=3 {{ username }}@{{ inventory_hostname }} "echo OK"
+      delegate_to: localhost
+      changed_when: false
+      failed_when: false
+      register: check_new_user
+
+    - name: Create new user
+      ansible.builtin.import_role:
+        name: createuser
+      when: not "OK" in check_new_user.stdout
