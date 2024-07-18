@@ -7,14 +7,6 @@
     name: libpam-radius-auth
     update_cache: true
 
-- name: Create new user without a password
-  ansible.builtin.user:
-    name: randomuser
-    create_home: true
-    groups: sudo
-    state: present
-    shell: /bin/bash
-
 - name: Check pam_radius_auth conf exists
   ansible.builtin.stat:
     path: /etc/pam_radius_auth.conf

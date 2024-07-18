@@ -1,6 +1,0 @@
----
-- name: Create User With Pam Auth Test
-  hosts: localhost
-  remote_user: root
-  roles:
-    - createuserwithpamauth

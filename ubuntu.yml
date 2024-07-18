@@ -2,4 +2,5 @@
 - name: Ubuntu
   hosts: webservers
   roles:
-    - createuserwithssh
+    - createuserwithpamauth
+    - getservices
