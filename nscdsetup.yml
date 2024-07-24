@@ -1,0 +1,7 @@
+---
+- name: Setup NSCD
+  hosts: webservers
+  become: true
+  # gather_facts: false
+  roles:
+    - nscdsetup

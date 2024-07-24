@@ -1,0 +1,61 @@
+---
+# - name: Gather facts
+#   ansible.builtin.setup:
+
+- name: Update repositories cache and install nscd, libpam-ldap, libnss-ldap, ldap-utils packages
+  ansible.builtin.apt:
+    name:
+      - nscd
+      - libpam-ldap
+      - libnss-ldap
+      - ldap-utils
+    update_cache: true
+
+- name: Move nsswitch.conf to nsswitch.conf.old
+  ansible.builtin.command:
+    cmd: mv /etc/nsswitch.conf /etc/nsswitch.conf.old
+    removes: /etc/nsswitch.conf
+    creates: /etc/nsswitch.conf.old
+
+- name: Move nscd.conf to nscd.conf.old
+  ansible.builtin.command:
+    cmd: mv /etc/nscd.conf /etc/nscd.conf.old
+    removes: /etc/nscd.conf
+    creates: /etc/nscd.conf.old
+
+- name: Move ldap.conf to ldap.conf.old
+  ansible.builtin.command:
+    cmd: mv /etc/ldap.conf /etc/ldap.conf.old
+    removes: /etc/ldap.conf
+    creates: /etc/ldap.conf.old
+
+- name: Copy local nsswitch.conf
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/nsswitch.conf"
+    dest: "/etc/nsswitch.conf"
+    mode: preserve
+
+- name: Copy local nscd.conf
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/nscd.conf"
+    dest: "/etc/nscd.conf"
+    mode: preserve
+
+- name: Copy local ldap.conf
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/ldap.conf"
+    dest: "/etc/ldap.conf"
+    mode: preserve
+
+- name: Restart service nscd
+  ansible.builtin.service:
+    name: nscd
+    state: restarted
+
+- name: Restart service sshd
+  ansible.builtin.service:
+    name: sshd
+    state: restarted

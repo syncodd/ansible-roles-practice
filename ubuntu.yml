@@ -1,6 +1,0 @@
----
-- name: Ubuntu
-  hosts: webservers
-  roles:
-    - createuserwithpamauth
-    - getservices

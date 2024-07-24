@@ -8,3 +8,5 @@ passwords/
 *.log
 
 id_rsa*
+
+*.conf

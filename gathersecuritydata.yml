@@ -1,7 +1,0 @@
----
-- name: Gather Security Data
-  hosts: webservers
-  become: true
-  roles:
-    - listenports
-    - getservices
