@@ -1,0 +1,7 @@
+---
+- name: Copy local 40-send-logs-remote.conf
+  ansible.builtin.copy:
+    remote_src: false
+    src: "{{ role_path }}/files/40-send-logs-remote.conf"
+    dest: "/etc/rsyslog.d/40-send-logs-remote.conf"
+    mode: preserve
